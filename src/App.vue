@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <HeaderVue />
+    <HeaderVue title="Task Tracker" />
   </div>
 </template>
 
