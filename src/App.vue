@@ -1,16 +1,89 @@
 <template>
   <div class="container">
     <HeaderVue title="Task Tracker" />
+    <div v-if="showAddTask"><AddTask @add-task="addTask" /></div>
+
+    <TasksVue
+      @toggle-reminder="toggleReminder"
+      @delete-task="deleteTask"
+      :tasks="tasks"
+    />
   </div>
 </template>
 
 <script>
 import HeaderVue from './components/Header.vue'
+import TasksVue from './components/Tasks.vue'
+import AddTask from './components/AddTask.vue'
 
 export default {
   name: 'App',
   components: {
-    HeaderVue
+    HeaderVue,
+    TasksVue,
+    AddTask
+  },
+  // eslint-disable-next-line space-before-function-paren
+  data() {
+    return {
+      tasks: [],
+      showAddTask: false
+    }
+  methods: {
+    // eslint-disable-next-line space-before-function-paren
+    addTask(task) {
+      this.tasks.push(task)
+    },
+    // eslint-disable-next-line space-before-function-paren
+    deleteTask(id) {
+      if (confirm('Are you sure you want to delete this task?')) {
+        this.tasks = this.tasks.filter(task => task.id !== id)
+      }
+    },
+    // eslint-disable-next-line space-before-function-paren
+    toggleReminder(id) {
+      this.tasks = this.tasks.map(task => {
+        if (task.id === id) {
+          task.completed = !task.completed
+        }
+        return task
+      })
+    }
+  },
+  // eslint-disable-next-line space-before-function-paren
+  created() {
+    this.tasks = [
+      {
+        id: 1,
+        title: 'Learn Vue',
+        day: 'March 23 at 10:00 AM',
+        completed: true
+      },
+      {
+        id: 2,
+        title: 'Learn Vue Router',
+        day: 'March 24 at 10:00 AM',
+        completed: true
+      },
+      {
+        id: 3,
+        title: 'Learn Vuex',
+        day: 'March 25 at 10:00 AM',
+        completed: false
+      },
+      {
+        id: 4,
+        title: 'Learn Vue Devtools',
+        day: 'March 26 at 10:00 AM',
+        completed: false
+      },
+      {
+        id: 5,
+        title: 'Learn Vue Loader',
+        day: 'March 27 at 10:00 AM',
+        completed: false
+      }
+    ]
   }
 }
 </script>
